@@ -27,3 +27,7 @@ A machine learning system that predicts loan approval with **97.78% accuracy** u
 ## Installation
 ```bash
 pip install -r requirements.txt
+
+
+Author
+Loan Approval Prediction System- poornima M
