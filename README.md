@@ -1,4 +1,4 @@
-# 🏦 Loan Approval Prediction System
+# Loan Approval Prediction System
 
 ## Overview
 A machine learning system that predicts loan approval/rejection using classification algorithms.
@@ -19,7 +19,7 @@ A machine learning system that predicts loan approval/rejection using classifica
 - Accuracy: 85%+
 - See `output/` folder for detailed reports
 
-# 🏦 Loan Approval Prediction System
+#  Loan Approval Prediction System
 
 ## Overview
 A machine learning system that predicts loan approval with **97.78% accuracy** using Decision Tree classifier.
