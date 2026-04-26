@@ -19,15 +19,66 @@ A machine learning system that predicts loan approval/rejection using classifica
 - Accuracy: 85%+
 - See `output/` folder for detailed reports
 
-#  Loan Approval Prediction System
-
-## Overview
-A machine learning system that predicts loan approval with **97.78% accuracy** using Decision Tree classifier.
-
 ## Installation
 ```bash
 pip install -r requirements.txt
 
+#Loan Approval Prediction System (Flask Web App)
+
+This project is a Machine Learning-based web application that predicts whether a loan application will be **Approved  or Rejected ** based on user input details.
+
+##  Technologies Used
+
+* Python 
+* Flask 
+* Scikit-learn 
+* Pandas & NumPy 
+* HTML/CSS 
+
+## Project Structure
+
+```
+LoanApprovalPrediction/
+│── app.py
+│── model.pkl
+│── scaler.pkl
+│── templates/
+│     └── index.html
+│── static/
+│── requirements.txt
+```
+
+##  How to Run
+
+1. Open terminal
+2. Activate virtual environment
+
+   ```
+   .venv\Scripts\activate
+   ```
+3. Run the app
+
+   ```
+   python app.py
+   ```
+4. Open browser and go to
+
+   ```
+   http://localhost:5000
+   ```
+
+##  Input Parameters
+
+* Income
+* Loan Amount
+* Credit Score
+* Employment Status
+* Other financial details
+
+##  Output
+
+* **Approved **
+* **Rejected **
 
 Author
 Loan Approval Prediction System- poornima M
