@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏦 Loan Approval Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .result.approved {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .result.rejected {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .result h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .result p {
+            font-size: 18px;
+        }
+
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 Loan Approval Prediction</h1>
+
+        <form id="predictionForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Annual Income (₹)</label>
+                    <input type="number" id="income_annum" required>
+                </div>
+                <div class="form-group">
+                    <label>Loan Amount (₹)</label>
+                    <input type="number" id="loan_amount" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CIBIL Score</label>
+                    <input type="number" id="cibil_score" min="300" max="900" required>
+                </div>
+                <div class="form-group">
+                    <label>Loan Term (months)</label>
+                    <input type="number" id="loan_term" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>No. of Dependents</label>
+                    <select id="no_of_dependents" required>
+                        <option value="">Select</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Education</label>
+                    <select id="education" required>
+                        <option value="">Select</option>
+                        <option value="0">Graduate</option>
+                        <option value="1">Not Graduate</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Self Employed</label>
+                    <select id="self_employed" required>
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Residential Assets (₹)</label>
+                    <input type="number" id="residential_assets_value" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Commercial Assets (₹)</label>
+                    <input type="number" id="commercial_assets_value" required>
+                </div>
+                <div class="form-group">
+                    <label>Luxury Assets (₹)</label>
+                    <input type="number" id="luxury_assets_value" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Bank Assets (₹)</label>
+                <input type="number" id="bank_asset_value" required>
+            </div>
+
+            <button type="submit">🔍 Check Loan Status</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your request...</p>
+        </div>
+
+        <div class="result" id="result">
+            <h2 id="resultText"></h2>
+            <p id="confidenceText"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            const data = {
+                no_of_dependents: document.getElementById('no_of_dependents').value,
+                education: document.getElementById('education').value,
+                self_employed: document.getElementById('self_employed').value,
+                income_annum: document.getElementById('income_annum').value,
+                loan_amount: document.getElementById('loan_amount').value,
+                loan_term: document.getElementById('loan_term').value,
+                cibil_score: document.getElementById('cibil_score').value,
+                residential_assets_value: document.getElementById('residential_assets_value').value,
+                commercial_assets_value: document.getElementById('commercial_assets_value').value,
+                luxury_assets_value: document.getElementById('luxury_assets_value').value,
+                bank_asset_value: document.getElementById('bank_asset_value').value
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+
+                loading.style.display = 'none';
+                result.style.display = 'block';
+
+                const isApproved = responseData.code === 1;
+                result.className = `result ${isApproved ? 'approved' : 'rejected'}`;
+                document.getElementById('resultText').textContent =
+                    isApproved ? '✅ APPROVED' : '❌ REJECTED';
+                document.getElementById('confidenceText').textContent =
+                    `Confidence: ${responseData.confidence}`;
+            } catch (error) {
+                loading.style.display = 'none';
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
